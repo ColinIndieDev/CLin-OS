@@ -1,0 +1,4 @@
+1. Build kernel.elf via CMake
+2. Copy kernel.elf into iso-root/boot
+3. Command 'grub-mkrescue -o clin.iso iso-root'
+4. Emulate OS with 'qemu-system-x86_64 -cdrom clin.iso'
