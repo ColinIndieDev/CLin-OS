@@ -21,12 +21,15 @@ add_executable(kernel.elf
     src/impl/x86-64/boot/main.asm
     src/impl/x86-64/boot/main64.asm
     
-    src/kernel/io.c
-    src/kernel/sleep.c
-    src/kernel/rtc.c
+    src/utils/io.c
+    src/utils/sleep.c
+    src/utils/rtc.c
+    src/utils/liballoc.c
+    src/utils/alloc.c
+
     src/kernel/idt.c
     src/kernel/idt.asm
-
+    src/kernel/cmd.c
     src/kernel/main.c
 )
 

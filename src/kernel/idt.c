@@ -1,6 +1,7 @@
 #include "idt.h"
-#include "io.h"
-#include "sleep.h"
+#include "cmd.h"
+#include "../utils/io.h"
+#include "../utils/sleep.h"
 
 __attribute__((aligned(0x10)))
 static idt_entry_t idt[256];
@@ -55,17 +56,21 @@ char translate_scancode(uint8_t scancode, uint8_t state) {
     return kbdde[scancode];
 }
 
+#define KEYBOARD_PORT 0x60
+#define KEY_BACKSPACE 0x0E
+#define KEY_RETURN 0x1C
+
 static uint8_t modifier_state = 0;
 
 void keyboard_handler() {
-    uint8_t scancode = inportb(0x60);
+    uint8_t scancode = inportb(KEYBOARD_PORT);
 
-    if (scancode == 0x0E) {
+    if (scancode == KEY_BACKSPACE) {
         clearcin();
-        return;
-    }
-
-    if (scancode & 0x80) {
+        clearccmd();
+    } else if (scancode == KEY_RETURN) {
+        execcmd();
+    } else if (scancode & 0x80) {
         scancode &= 0x7F;
         
         if (scancode == 0x2A || scancode == 0x36) {
@@ -81,6 +86,7 @@ void keyboard_handler() {
         } else {
             char ascii = translate_scancode(scancode, modifier_state);
             putcin(ascii);
+            putccmd(ascii);
         }
     }
 }

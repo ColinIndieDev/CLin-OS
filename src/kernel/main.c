@@ -1,20 +1,25 @@
-#include "io.h"
-#include "sleep.h"
+#include "../utils/io.h"
+#include "../utils/sleep.h"
+#include "../utils/rtc.h"
+#include "../utils/alloc.h"
 #include "idt.h"
-#include "rtc.h"
 
-int elapsed = 0;
+extern uint64_t kernel_end;
+
+#define MEMORY_MB 128
 
 void kernel_main() {
     idt_init();
+    size_t memory = MEMORY_MB * 1024 * 1024;
+    pmm_init(memory, (uintptr_t)&kernel_end);
     timer_init();
     clear();
-    set_color(COLOR_YELLOW, COLOR_BLACK);
+    initin();
+    set_color(COLOR_LIGHT_BLUE, COLOR_BLACK);
     printf("Welcome to the CLin Operating System!\n");
-    rtc_time_t now;
-    rtc_get_datetime(&now);
-    printf("Time: %d:%d:%d\nDate: %d.%d.%d\n", now.hour, now.minute, now.second, now.day, now.month, now.year);
-    while (1) {
+    set_color(COLOR_WHITE, COLOR_BLACK);
 
+    while (1) {
+        // Waiting
     }
 }

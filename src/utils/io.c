@@ -1,4 +1,5 @@
 #include "io.h"
+#include "../kernel/cmd.h"
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -16,12 +17,17 @@ typedef struct {
 
 static character_t *buffer = (character_t *)VGA_PTR;
 static size_t cur_col = 0;
-static size_t cur_col_in = 0;
+static size_t cur_col_in = PTR_DEFAULT;
 static size_t cur_row = 0;
 static uint8_t color = COLOR_WHITE | COLOR_BLACK << 4;
 static uint8_t color_in = COLOR_WHITE | COLOR_BLACK << 4;
 
-void clear_row(size_t row) {
+void initin() {
+    buffer[0 + (COL_COUNT * (ROW_COUNT - 1))].c = '>';
+    buffer[1 + (COL_COUNT * (ROW_COUNT - 1))].c = ' ';
+}
+
+void clearr(size_t row) {
     character_t empty = {
         .c = ' ',
         .color = color
@@ -34,8 +40,14 @@ void clear_row(size_t row) {
 
 void clear() {
     for (int row = 0; row < ROW_COUNT - 1; row++) {
-        clear_row(row);
+        clearr(row);
     }
+}
+
+void reset() {
+    clear();
+    cur_col = 0;
+    cur_row = 0;
 }
 
 void putn() {
@@ -87,10 +99,22 @@ void putcin(char c) {
 }
 
 void clearcin() {
-    if (cur_col_in > 0) {
+    if (cur_col_in > PTR_DEFAULT) {
         cur_col_in--;
     }
     buffer[cur_col_in + (COL_COUNT * (ROW_COUNT - 1))].c = ' ';
+}
+
+void clearin() {
+    character_t empty = {
+        .c = ' ',
+        .color = color
+    };
+
+    for (int col = PTR_DEFAULT; col < COL_COUNT; col++) {
+        buffer[col + (COL_COUNT * (ROW_COUNT - 1))] = empty;
+    }
+    cur_col_in = PTR_DEFAULT;
 }
 
 void puts(const char *str) {

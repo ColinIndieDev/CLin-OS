@@ -21,11 +21,14 @@ enum {
 	COLOR_WHITE = 15,
 };
 
+void initin();
 void clear();
+void reset();
 void putc(char c);
 void puts(const char *str);
 void putcin(char c);
 void clearcin();
+void clearin();
 void printf(const char *fmt, ...);
 void set_color(uint8_t front, uint8_t back);
 void set_color_in(uint8_t front, uint8_t back);
