@@ -18,3 +18,4 @@ typedef struct {
 } __attribute__((packed)) idtr_t;
 
 void idt_init();
+char get_char_pressed();

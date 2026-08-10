@@ -1,8 +1,8 @@
-#include "liballoc.h"
+#include "stdlib.h"
 
-// Modified - using CLin's IO
+// Modified (using CLin's stdio instead)
 #ifdef DEBUG
-#include "io.h"
+#include "stdio.h"
 #endif
 
 /**  Durand's Ridiculously Amazing Super Duper Memory functions.  */

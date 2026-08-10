@@ -1,11 +1,12 @@
 #include "idt.h"
 #include "cmd.h"
-#include "../utils/io.h"
+#include "../utils/stdio.h"
 #include "../utils/sleep.h"
 
 __attribute__((aligned(0x10)))
 static idt_entry_t idt[256];
 static idtr_t idtr;
+static char char_pressed = '\0';
 
 extern void idt_load(idtr_t* idtr_ptr);
 extern void isr0_stub();
@@ -85,10 +86,15 @@ void keyboard_handler() {
             modifier_state |= ALTGR_PRESSED;
         } else {
             char ascii = translate_scancode(scancode, modifier_state);
+            char_pressed = ascii;
             putcin(ascii);
             putccmd(ascii);
         }
     }
+}
+
+char get_char_pressed() {
+    return char_pressed;
 }
 
 void exception_handler(uint64_t interrupt_num) {

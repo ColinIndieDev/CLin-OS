@@ -6,6 +6,9 @@ bits 32
 _start:
     mov esp, stack_top
 
+    ; Save multiboot addr
+    mov esi, ebx
+
     call check_multiboot
     call check_cpuid
     call check_long_mode
@@ -64,19 +67,31 @@ setup_page_tables:
     or eax, 0b11
     mov [page_table_l4], eax
 
-    mov eax, page_table_l2
+    mov eax, page_table_l2_1
     or eax, 0b11
     mov [page_table_l3], eax
+
+    mov eax, page_table_l2_2
+    or eax, 0b11
+    mov [page_table_l3 + 8], eax
+
+    mov eax, page_table_l2_3
+    or eax, 0b11
+    mov [page_table_l3 + 16], eax
+
+    mov eax, page_table_l2_4
+    or eax, 0b11
+    mov [page_table_l3 + 24], eax
 
     mov ecx, 0 ; counter
 .loop:
 	mov eax, 0x200000
 	mul ecx
 	or eax, 0b10000011
-	mov [page_table_l2 + ecx * 8], eax
+	mov [page_table_l2_1 + ecx * 8], eax
 
 	inc ecx
-	cmp ecx, 512
+	cmp ecx, 2048
 	jne .loop
 
 	ret
@@ -113,7 +128,13 @@ page_table_l4:
     resb 4096
 page_table_l3:
     resb 4096
-page_table_l2:
+page_table_l2_1:
+    resb 4096
+page_table_l2_2:
+    resb 4096
+page_table_l2_3:
+    resb 4096
+page_table_l2_4:
     resb 4096
 stack_bottom:
     resb 4096 * 4

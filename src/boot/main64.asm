@@ -10,6 +10,8 @@ long_mode_start:
     mov es, ax
     mov fs, ax
     mov gs, ax
-    
+  
+    ; Multiboot Address
+    mov rdi, rsi
     call kernel_main
     hlt

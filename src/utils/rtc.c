@@ -4,7 +4,7 @@
 #define CMOS_DATA 0x71
 
 // God forbid
-#define TIMEZONE_OFFSET 2 /* UTC+2 for MESZ (Middle Europa Summer Time) */
+#define TIMEZONE_OFFSET 2 /* UTC+2 for MESZ (Middle Europe Summer Time) */
 
 static inline void outb(uint16_t port, uint8_t val) {
     __asm__ volatile ("outb %0, %1" : : "a"(val), "Nd"(port));

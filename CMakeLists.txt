@@ -17,19 +17,22 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffreestanding -nostdlib -fno-stack-protector -mno-red-zone -mno-mmx -mno-sse -mno-sse2 -mcmodel=kernel -Wall -Wextra")
 
 add_executable(kernel.elf
-    src/impl/x86-64/boot/header.asm
-    src/impl/x86-64/boot/main.asm
-    src/impl/x86-64/boot/main64.asm
+    src/boot/header.asm
+    src/boot/main.asm
+    src/boot/main64.asm
     
-    src/utils/io.c
+    src/utils/stdio.c
     src/utils/sleep.c
+    src/utils/string.c
     src/utils/rtc.c
-    src/utils/liballoc.c
-    src/utils/alloc.c
+    src/utils/stdlib.c
+    src/utils/pmm.c
 
     src/kernel/idt.c
     src/kernel/idt.asm
     src/kernel/cmd.c
+    src/kernel/fb.c
+    src/kernel/vfs.c
     src/kernel/main.c
 )
 

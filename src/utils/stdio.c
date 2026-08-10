@@ -1,4 +1,4 @@
-#include "io.h"
+#include "stdio.h"
 #include "../kernel/cmd.h"
 
 #include <stddef.h>
